@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ProjectItem from './Project/ProjectItem'
 import Navbar from './Layout/Navbar'
+import AddProject from './Project/AddProject'
 import CreateProject from './Project/CreateProject'
 
 class  Dashboard extends Component {
