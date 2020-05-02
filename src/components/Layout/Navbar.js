@@ -1,6 +1,37 @@
 import React, {Component} from "react";
+import ReactDOM from 'react-dom';
+import Login from "../Login";
+import {Button} from "react-bootstrap"
+import Provider from "react-redux/lib/components/Provider";
+import store from '../../store'
 
 class  Navbar extends Component {
+
+
+    constructor(props) {
+        console.log('props of navbar')
+        console.log(props)
+        super(props);
+        this.state = {
+            login: false,
+            show: false
+        }
+    }
+
+    handleLogin = () => {
+        this.setState({
+            show: true
+        })
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        ReactDOM.render(
+        <Provider store={store}>
+            <Login store={store} history={this.props.history}/>
+        </Provider>,
+         container
+        );
+    }
+
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
@@ -28,9 +59,9 @@ class  Navbar extends Component {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="login.html">
-                            Login
-                        </a>
+                    <Button variant="primary" onClick={() => this.handleLogin()}>
+                         Login
+                    </Button>
                     </li>
                 </ul>
             </div>
