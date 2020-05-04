@@ -2,24 +2,40 @@ import React, {Component} from "react";
 import ProjectItem from './Project/ProjectItem'
 import CreateProject from './Project/CreateProject'
 import {Dropdown} from "react-bootstrap"
-
+import {connect} from 'react-redux'
+import {getAllProjects} from '../actions/projectActions'
+import PropTypes from 'prop-types'
+ 
 class  UserDashboard extends Component {
    
     constructor(props) {
         super(props);
-        this.state = {
-            username : props.history.location.state.username
+        console.log('rpops of user dashboar')
+        console.log(props);
+        let uname = ''
+        if(props.history.location.state) {
+          uname = props.history.location.state.username;
         } 
+        this.state = {
+            username : uname
+        } 
+    }
+
+    componentDidMount() {
+      this.props.getAllProjects();
     }
    
    
     render() {
+      console.log('propsdsad if user dashboar')
+      console.log(this.props.project.projects);
+      const userProjects = this.props.project.projects;
       return (
       <div>
           <nav className="navbar navbar-expand-sm navbar-dark bg-success mb-4">
           <div className="panel-group">
           <div className="panel panel-success" id="userdashboard">
-              Projects Of {this.state.username} user
+              Dashboard of {this.state.username} user
             </div>
           </div>
           
@@ -51,7 +67,12 @@ class  UserDashboard extends Component {
                     <CreateProject />
                     <br />
                     <hr />
-                    <ProjectItem />
+                    {
+                      userProjects.map(userProject => (
+                        <ProjectItem key={userProject.id} project={userProject} />
+                        )
+                      )
+                    }
                 </div>
               </div>
             </div>
@@ -61,4 +82,13 @@ class  UserDashboard extends Component {
     }
   }
 
-export default UserDashboard  
+  UserDashboard.propTypes = {
+    project : PropTypes.object.isRequired,
+    getAllProjects : PropTypes.func.isRequired
+  }
+
+  const mapStateToProps = state => ({
+    project: state.project
+  })
+
+export default connect(mapStateToProps , {getAllProjects})(UserDashboard)  
