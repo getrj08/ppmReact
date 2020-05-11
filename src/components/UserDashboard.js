@@ -1,17 +1,20 @@
 import React, {Component} from "react";
+import ReactDOM from 'react-dom';
 import ProjectItem from './Project/ProjectItem'
 import CreateProject from './Project/CreateProject'
 import {Dropdown} from "react-bootstrap"
 import {connect} from 'react-redux'
+import Provider from "react-redux/lib/components/Provider";
+import store from '../store'
+import {Button} from "react-bootstrap"
 import {getAllProjects} from '../actions/projectActions'
 import PropTypes from 'prop-types'
+import AddProject from "./Project/AddProject";
  
 class  UserDashboard extends Component {
    
     constructor(props) {
         super(props);
-        console.log('rpops of user dashboar')
-        console.log(props);
         let uname = ''
         if(props.history.location.state) {
           uname = props.history.location.state.username;
@@ -24,11 +27,20 @@ class  UserDashboard extends Component {
     componentDidMount() {
       this.props.getAllProjects();
     }
+
+    handleCreateProjectForm() {
+      const container = document.createElement("div");
+        document.body.appendChild(container);
+        ReactDOM.render(
+        <Provider store={store}>
+            <AddProject store={store} history={this.props.history}/>
+        </Provider>,
+         container
+        );
+    }
    
    
     render() {
-      console.log('propsdsad if user dashboar')
-      console.log(this.props.project.projects);
       const userProjects = this.props.project.projects;
       return (
       <div>
@@ -64,7 +76,9 @@ class  UserDashboard extends Component {
               <div className="row">
                 <div className="col-md-12">
                     <br />
-                    <CreateProject />
+                    <Button variant="primary" onClick={() => this.handleCreateProjectForm()}>
+                         CreateProject
+                    </Button>
                     <br />
                     <hr />
                     {

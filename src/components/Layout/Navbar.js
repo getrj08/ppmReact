@@ -9,8 +9,6 @@ class  Navbar extends Component {
 
 
     constructor(props) {
-        console.log('props of navbar')
-        console.log(props)
         super(props);
         this.state = {
             login: false,

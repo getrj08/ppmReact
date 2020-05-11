@@ -1,7 +1,10 @@
 import React, {Component} from "react";
+import ReactDOM from 'react-dom';
 import PropTypes from "prop-types"
 import {connect} from "react-redux"
 import {createProject} from "../../actions/projectActions"
+import {Button,Modal, Form, Alert} from 'react-bootstrap';
+//import {Alert} from 'react-bootstrap/Alert'
 
 class  AddProject extends Component {
     constructor(props) {
@@ -15,14 +18,16 @@ class  AddProject extends Component {
             projectIdentifier: "",
             start_date: "",
             end_date : "",
+            show : true,
+            showAlert : true,
             errors : {}
         }
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        //this.onChange = this.onChange.bind(this);
+        //this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onChange(e) {
+    handleChange = (e) => {
         this.setState(
             {
                 [e.target.name] : e.target.value
@@ -30,8 +35,9 @@ class  AddProject extends Component {
         )
     }
 
-    onSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
+        
         const newProject = {
             projectName: this.state.projectName,
             projectDescription: this.state.projectDescription,
@@ -39,8 +45,40 @@ class  AddProject extends Component {
             start_date: this.state.start_date,
             end_date : this.state.end_date
         }
+        console.log(newProject);
+        this.props.createProject(newProject, this.props.history, this)
+    }
 
-        this.props.createProject(newProject, this.props.history)
+    handleClose() {
+        this.setState( {
+            show : false
+        })
+    }
+
+    handleAlertClose() {
+        this.setState({
+            showAlert : false
+        })
+    }
+
+    handleProjectCreateAlert() {
+        console.log('handling alerts')
+        this.setState({
+            showAlert: true
+        })
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        ReactDOM.render(
+            <Alert show={this.state.showAlert} variant="success">
+            <Alert.Heading>Project Created Successfully.</Alert.Heading>
+            <div className="d-flex justify-content-end">
+            <Button onClick={() => this.handleAlertClose()} variant="outline-success">
+            Close me ya'll!
+          </Button>
+        </div>
+          </Alert>,
+         container
+        );
     }
 
     //lifecycle hooks
@@ -49,11 +87,52 @@ class  AddProject extends Component {
             this.setState({errors: nextProps.errors});
         }
     }
+
+    createProjectModalForm() {
+        const {errors} = this.state;
+        return (
+            <>
+            <Modal show={this.state.show} onHide={() => this.handleClose()} animation={true}>
+              <Modal.Header closeButton>
+                <Modal.Title>Project Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="idProjectName">
+                        <Form.Label>Project Name</Form.Label>
+                        <Form.Control type="text" name="projectName" value={this.state.projectName}
+                         placeholder="Enter Project Name" onChange={this.handleChange} />
+                         <p>{errors.projectName}</p>
+                    </Form.Group>
+                    <Form.Group controlId="idProjectIdentifier">
+                        <Form.Label>Project Identifier</Form.Label>
+                        <Form.Control type="text" name="projectIdentifier" value={this.state.projectIdentifier}
+                         placeholder="Enter unique project identifier" onChange={this.handleChange} />
+                         <p>{errors.projectIdentifier}</p>
+                    </Form.Group>
+                    <Form.Group controlId="idProjectDescription">
+                        <Form.Label>Project Description</Form.Label>
+                        <Form.Control type="text" name="projectDescription" value={this.state.projectDescription}
+                         placeholder="Enter Project Description" onChange={this.handleChange} />
+                         <p>{errors.projectDescription}</p>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Form>
+              </Modal.Body>
+            </Modal>
+            </>
+        );
+    }
     
     render() {
         const {errors} = this.state;
         return (
-            <div className="project">
+            <div>
+                {this.createProjectModalForm()}
+            </div>
+           /* <div className="project">
                 
                 <div className="container">
                     <div className="row">
@@ -105,7 +184,7 @@ class  AddProject extends Component {
                 </div>
             </div>
         </div>
-    </div>
+    </div>*/
         );
     }
 }

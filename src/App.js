@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Dashboard from './components/Dashboard';
 import UserDashboard from './components/UserDashboard'
@@ -9,7 +8,6 @@ import AddProject from './components/Project/AddProject';
 import Navbar from './components/Layout/Navbar';
 import {Provider} from "react-redux"
 import store from "./store"
-import Login from "./components/Login"
 
 function App() {
   return (
