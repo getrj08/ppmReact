@@ -10,6 +10,7 @@ import {Button} from "react-bootstrap"
 import {getAllProjects} from '../actions/projectActions'
 import PropTypes from 'prop-types'
 import AddProject from "./Project/AddProject";
+import {Modal} from 'react-bootstrap'
  
 class  UserDashboard extends Component {
    
@@ -20,8 +21,9 @@ class  UserDashboard extends Component {
           uname = props.history.location.state.username;
         } 
         this.state = {
-            username : uname
-        } 
+            username : uname,
+            successDelete : false
+        }
     }
 
     componentDidMount() {
@@ -38,6 +40,27 @@ class  UserDashboard extends Component {
          container
         );
     }
+
+    showDeletedContent(projectId) {
+       
+      console.log('rendering success delete from user dashboard')
+      this.setState( {
+        successDelete : true
+      })
+      console.log(this.state)
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      ReactDOM.render(
+          <Provider store={store}>
+              <Modal open={this.state.successDelete}>
+                  <Modal.Header closeButton>
+                   <Modal.Title>Project Deleted : {projectId}</Modal.Title>
+                  </Modal.Header>
+              </Modal>
+          </Provider>,
+          container
+      )
+  }
    
    
     render() {
@@ -83,7 +106,7 @@ class  UserDashboard extends Component {
                     <hr />
                     {
                       userProjects.map(userProject => (
-                        <ProjectItem key={userProject.id} project={userProject} />
+                        <ProjectItem key={userProject.id} project={userProject} history={this.props.history} />
                         )
                       )
                     }

@@ -1,9 +1,42 @@
 import React, {Component} from "react";
+import ReactDOM from 'react-dom';
+import UpdateProject from "./UpdateProject";
+import DeleteProject from "./DeleteProject";
+import Provider from "react-redux/lib/components/Provider";
+import store from '../../store'
 
 class  ProjectItem extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showDelete : true
+        }
+    }
+
+  handleProjectUpdate = (projectId) => {
+    const container = document.createElement("div");
+        document.body.appendChild(container);
+        ReactDOM.render(
+        <Provider store={store}>
+            <UpdateProject store={store} projectId={projectId} history={this.props.history}/>
+        </Provider>,
+         container
+        );
+  }
+
+  handleProjectDelete = (projectId) => {
+    const container = document.createElement("div");
+        document.body.appendChild(container);
+        ReactDOM.render(
+        <Provider store={store}>
+            <DeleteProject store={store} projectId={projectId} />
+        </Provider>,
+         container
+        );
+  }
+
   render() {
-      console.log('props of project items')
-      console.log(this.props)
       const project = this.props.project;
     return (
       <div className="container">
@@ -25,12 +58,12 @@ class  ProjectItem extends Component {
                                                <i className="fa fa-flag-checkered pr-1">Project Board </i>
                                            </li>
                                        </a>
-                                       <a href="#">
+                                       <a onClick={() => this.handleProjectUpdate(`${project.projectIdentifier}`)}>
                                            <li className="list-group-item update">
                                                <i className="fa fa-edit pr-1">Update Project Info</i>
                                            </li>
                                        </a>
-                                       <a href="">
+                                       <a onClick={() => this.handleProjectDelete(`${project.projectIdentifier}`)}>
                                            <li className="list-group-item delete">
                                                <i className="fa fa-minus-circle pr-1">Delete Project</i>
                                            </li>

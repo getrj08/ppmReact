@@ -1,16 +1,14 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECTS} from "./types";
+import {GET_ERRORS, GET_PROJECTS, GET_PROJECT_BY_ID, DELETE_PROJECT_SUCESS, ADD_CREATED_PROJECT} from "./types";
+
 
 export const createProject = (project, history, ProjectHandler)  => async dispatch => {
     try {
         const res = await axios.put(
             "http://localhost:8090/ppm/project",project
         )
-        console.log('resoinse rssf')
-        console.log(res)
         ProjectHandler.handleClose();
-        //ProjectHandler.handleProjectCreateAlert();
-        history.push('/user/dashboard')
+        window.location.reload(true)
     } catch(err) {
         console.log(err instanceof Error);
         console.log(err.message)
@@ -33,5 +31,63 @@ export const getAllProjects = () => async dispatch => {
     } catch(err) {
         console.log(err);
 
+    }
+}
+
+export const getProjectById = (projectId) => async dispatch => {
+    try {
+        const res = await axios.get(
+            "http://localhost:8090/ppm/project/"+projectId
+        )
+        console.log('response of get projeect')
+        console.log(res)
+        dispatch( {
+            type : GET_PROJECT_BY_ID,
+            payload : res.data
+        })
+    } catch(err) {
+        console.log(err);
+
+    }
+}
+
+export const updateProject = (updateProject , history , UpdateProject) => async dispatch => {
+    try {
+        console.log('request ready to fire')
+        const res = await axios.post(
+            "http://localhost:8090/ppm/project"+updateProject.projectIdentifier,updateProject
+        )
+        console.log('resoinse rssf fo update project')
+        console.log(res)
+        UpdateProject.handleClose();
+        //ProjectHandler.handleProjectCreateAlert();
+        history.push('/user/dashboard')
+    } catch(err) {
+        console.log(err instanceof Error);
+        console.log(err.message)
+        dispatch({
+            type: GET_ERRORS,
+            payload:err.response.data
+        })
+    }
+}
+
+export const deleteProject = (projectId , DeleteProject, UserDashboard) => async dispatch => {
+    try {
+        console.log('deleting project' + projectId)
+        const res = await axios.delete(
+            "http://localhost:8090/ppm/project/"+projectId
+        )
+        console.log(res)
+        DeleteProject.handleClose();
+      dispatch({
+        type: DELETE_PROJECT_SUCESS,
+        payload:{
+            res : res.data,
+            projectId : projectId
+        }
+    })
+    } catch(err) {
+        console.log(err)
     }
 }

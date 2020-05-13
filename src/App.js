@@ -8,6 +8,7 @@ import AddProject from './components/Project/AddProject';
 import Navbar from './components/Layout/Navbar';
 import {Provider} from "react-redux"
 import store from "./store"
+import Test from "./components/Project/Test"
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Router>
         <div className="App">
         <Route exact path="/" component={Navbar} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard" component={UserDashboard} />
           <Route exact path="/addProject" component={AddProject}  />
           <Route exact path="/user/dashboard" component={UserDashboard} />
         </div>
