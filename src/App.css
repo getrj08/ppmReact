@@ -86,3 +86,7 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.card-footer a {
+  cursor: pointer;
+}

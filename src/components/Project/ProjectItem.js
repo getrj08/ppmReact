@@ -36,6 +36,10 @@ class  ProjectItem extends Component {
         );
   }
 
+  handleProjectBoard = (projectId) => {
+    this.props.history.push('/user/dashboard/'+projectId)
+  }
+
   render() {
       const project = this.props.project;
     return (
@@ -53,7 +57,7 @@ class  ProjectItem extends Component {
                                </div>
                                <div className="col-md-4 d-none d-lg-block">
                                    <ul className="list-group">
-                                       <a href="#">
+                                       <a onClick={() => this.handleProjectBoard(`${project.projectIdentifier}`)}>
                                            <li className="list-group-item board">
                                                <i className="fa fa-flag-checkered pr-1">Project Board </i>
                                            </li>

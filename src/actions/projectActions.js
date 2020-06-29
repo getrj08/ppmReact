@@ -1,5 +1,5 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECTS, GET_PROJECT_BY_ID, DELETE_PROJECT_SUCESS, ADD_CREATED_PROJECT} from "./types";
+import {GET_ERRORS, GET_PROJECTS, GET_PROJECT_BY_ID, DELETE_PROJECT_SUCESS, GET_BACKLOG} from "./types";
 
 
 export const createProject = (project, history, ProjectHandler)  => async dispatch => {
@@ -89,5 +89,22 @@ export const deleteProject = (projectId , DeleteProject, UserDashboard) => async
     })
     } catch(err) {
         console.log(err)
+    }
+}
+
+export const getProjectBacklog = (projectId) => async dispatch => {
+    try {
+        console.log('getting project backlogs11111')
+        const res = await axios.get(
+            "http://localhost:8090/ppm/project/"+projectId+"/backlog"
+        );
+        console.log(res);
+        dispatch({
+            type : GET_BACKLOG,
+            payload : res.data
+        })
+
+    } catch (err) {
+        console.log(err);
     }
 }
