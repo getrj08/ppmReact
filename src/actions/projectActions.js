@@ -53,12 +53,9 @@ export const getProjectById = (projectId) => async dispatch => {
 
 export const updateProject = (updateProject , history , UpdateProject) => async dispatch => {
     try {
-        console.log('request ready to fire')
         const res = await axios.post(
             "http://localhost:8090/ppm/project"+updateProject.projectIdentifier,updateProject
         )
-        console.log('resoinse rssf fo update project')
-        console.log(res)
         UpdateProject.handleClose();
         //ProjectHandler.handleProjectCreateAlert();
         history.push('/user/dashboard')
@@ -78,7 +75,6 @@ export const deleteProject = (projectId , DeleteProject, UserDashboard) => async
         const res = await axios.delete(
             "http://localhost:8090/ppm/project/"+projectId
         )
-        console.log(res)
         DeleteProject.handleClose();
       dispatch({
         type: DELETE_PROJECT_SUCESS,
@@ -103,6 +99,20 @@ export const getProjectBacklog = (projectId) => async dispatch => {
             type : GET_BACKLOG,
             payload : res.data
         })
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const updateProjectTaskStatus = (projectId,taskId,task) => async dispatch => {
+    try {
+        console.log('getting project task update for status')
+        const res = await axios.post(
+            "http://localhost:8090/ppm/projectTask/"+projectId+"/"+taskId , task
+        );
+        console.log(res);
+        window.location.reload(true)
 
     } catch (err) {
         console.log(err);

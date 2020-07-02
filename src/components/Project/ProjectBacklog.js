@@ -37,13 +37,15 @@ class  ProjectBacklog extends Component {
         var todoProjectTask = [];
         var inProgressProjectTask = [];
         var completedProjectTask = [];
+        console.log('u projs in backlogs')
+        console.log(uPrjTsks)
         if(uPrjTsks != undefined) {
           uPrjTsks.forEach(function(task) {
             switch(task.status) {
               case "OPEN" : openProjectTask.push(task); break;
               case "TODO" : todoProjectTask.push(task); break
               case "IN_PROGRESS" : inProgressProjectTask.push(task); break;
-              case "COMPLETED" : completedProjectTask.push(task); break;
+              case "COMPLETE" : completedProjectTask.push(task); break;
               default : break; 
              }
           })
@@ -68,7 +70,7 @@ class  ProjectBacklog extends Component {
                 <br />
                 <br />
                 <br />
-                {console.log(openProjectTask)}
+                {console.log('in backlog of lall tasks')}
                 <ProjectTasks allTasks={allTasks}  history={this.props.history} />
             </div>
             

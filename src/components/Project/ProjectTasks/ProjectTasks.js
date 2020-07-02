@@ -54,7 +54,7 @@ class ProjectTasks extends Component {
                           </div> 
                       </div>
                       {
-                        openProjectTask.map(todoTask => (
+                        todoProjectTask.map(todoTask => (
                             <div className="card bg-primary text-center text-white mb-2">
                               <ProjectTask key={todoTask.projectTaskId} projectTask={todoTask} history={this.props.history} />
                             </div>
